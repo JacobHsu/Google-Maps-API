@@ -11,7 +11,7 @@
   var autocomplete;
   
   function initialize() {
-    var myLatlng = new google.maps.LatLng(37.783259, -122.402708);
+    var myLatlng = new google.maps.LatLng(25.033681,121.564726);
     var myOptions = {
       zoom: 12,
       center: myLatlng,
@@ -65,15 +65,17 @@
     if (type != 'establishment') {
       search.types = [ type ];
     }
-    
+
     places.search(search, function(results, status) {
       if (status == google.maps.places.PlacesServiceStatus.OK) {
         clearResults();
         clearMarkers();
+        var image = 'https://google-developers.appspot.com/maps/documentation/javascript/examples/full/images/beachflag.png';
         for (var i = 0; i < results.length; i++) {
           markers[i] = new google.maps.Marker({
             position: results[i].geometry.location,
-            animation: google.maps.Animation.DROP
+            animation: google.maps.Animation.DROP,
+            icon: image
           });
           google.maps.event.addListener(markers[i], 'click', getDetails(results[i], i));
           setTimeout(dropMarker(i), i * 100);
