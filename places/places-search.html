@@ -70,12 +70,19 @@
       if (status == google.maps.places.PlacesServiceStatus.OK) {
         clearResults();
         clearMarkers();
-        var image = 'https://google-developers.appspot.com/maps/documentation/javascript/examples/full/images/beachflag.png';
         for (var i = 0; i < results.length; i++) {
+          var image = {
+            url: results[i].icon,
+            size: new google.maps.Size(25, 25),
+            origin: new google.maps.Point(0, 0),
+            anchor: new google.maps.Point(17, 34),
+            scaledSize: new google.maps.Size(25, 25)
+          };
+
           markers[i] = new google.maps.Marker({
             position: results[i].geometry.location,
             animation: google.maps.Animation.DROP,
-            icon: image
+            icon: image,
           });
           google.maps.event.addListener(markers[i], 'click', getDetails(results[i], i));
           setTimeout(dropMarker(i), i * 100);
