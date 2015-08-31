@@ -11,19 +11,31 @@
   var autocomplete;
   
   function initialize() {
-    var myLatlng = new google.maps.LatLng(25.033681,121.564726);
-    var myOptions = {
-      zoom: 12,
-      center: myLatlng,
-      mapTypeId: google.maps.MapTypeId.ROADMAP
+
+    if(!navigator.geolocation) {
+      document.getElementById('google_canvas').innerHTML = 'No Geolocation Support.';
+      return;
     }
-    map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
-    places = new google.maps.places.PlacesService(map);
-    google.maps.event.addListener(map, 'tilesloaded', tilesLoaded);
-    autocomplete = new google.maps.places.Autocomplete(document.getElementById('autocomplete'));
-    google.maps.event.addListener(autocomplete, 'place_changed', function() {
-      showSelectedPlace();
+    navigator.geolocation.getCurrentPosition(function(position) {
+      var lat = position.coords.latitude;
+      var lng = position.coords.longitude;
+      var myLatlng = new google.maps.LatLng(lat,lng); //25.033681,121.564726
+      var myOptions = {
+        zoom: 16, //12,
+        center: myLatlng,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      }
+      map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+      places = new google.maps.places.PlacesService(map);
+      google.maps.event.addListener(map, 'tilesloaded', tilesLoaded);
+      autocomplete = new google.maps.places.Autocomplete(document.getElementById('autocomplete'));
+      google.maps.event.addListener(autocomplete, 'place_changed', function() {
+        showSelectedPlace();
+      });
+
     });
+
+
   }
   
   function tilesLoaded() {
